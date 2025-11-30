@@ -24,10 +24,8 @@ def get_super_lig_season():
 
 
 def get_last_five_matches(team):
-    league_id, season = get_super_lig_season()
-
-    # find team ID
-    url_team = f"{API_BASE}/teams?league={league_id}&season={season}&search={team}"
+    # 1) Takımı genel arama ile bul
+    url_team = f"{API_BASE}/teams?search={team}"
     res_team = requests.get(url_team, headers=HEADERS).json()
 
     if not res_team["response"]:
@@ -38,9 +36,20 @@ def get_last_five_matches(team):
     team_name = team_data["name"]
     logo = team_data["logo"]
 
-    # last matches
+    # 2) Süper Lig ID + sezon al
+    league_id, season = get_super_lig_season()
+
+    # 3) Son 5 maç
     url_matches = f"{API_BASE}/fixtures?team={team_id}&season={season}&league={league_id}&last=5"
     res = requests.get(url_matches, headers=HEADERS).json()
+
+    if not res["response"]:
+        return {
+            "team_name": team_name,
+            "logo": logo,
+            "form_string": "",
+            "matches": []
+        }
 
     form_letters = []
     matches = []
@@ -50,7 +59,7 @@ def get_last_five_matches(team):
         away = m["teams"]["away"]
         score = m["goals"]
 
-        # who won?
+        # Kazanan?
         if home["winner"] is True:
             winner = home["name"]
         elif away["winner"] is True:
@@ -58,7 +67,7 @@ def get_last_five_matches(team):
         else:
             winner = None
 
-        # form sequence
+        # Form harfi
         if winner is None:
             form_letters.append("B")
         elif winner.lower() == team_name.lower():
@@ -78,9 +87,3 @@ def get_last_five_matches(team):
         "form_string": " ".join(form_letters),
         "matches": matches
     }
-
-
-def debug_team_search(team):
-    url = f"{API_BASE}/teams?search={team}"
-    res = requests.get(url, headers=HEADERS).json()
-    return res
