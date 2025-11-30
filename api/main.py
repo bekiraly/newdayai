@@ -15,3 +15,9 @@ def form(team: str):
         return {"error": "Takım bulunamadı"}
 
     return data
+
+from scraper.api_football import get_super_lig_season
+
+@app.get("/ligtest")
+def ligtest():
+    return get_super_lig_season()
