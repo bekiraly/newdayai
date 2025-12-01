@@ -1,5 +1,30 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from scraper.fixtures import get_today_fixtures, get_random_fixture_prediction
+
+@app.get("/fixtures/today")
+def fixtures_today():
+    return {"fixtures": get_today_fixtures()}
+
+
+@app.get("/fixtures/random")
+def fixtures_random():
+    data = get_random_fixture_prediction()
+    if not data:
+        return {"error": "Fikstür bulunamadı"}
+    return data
+
+@app.get("/fixtures/today")
+def fixtures_today():
+    return {"fixtures": get_today_fixtures()}
+
+
+@app.get("/fixtures/random")
+def fixtures_random():
+    data = get_random_fixture_prediction()
+    if not data:
+        return {"error": "Fikstür bulunamadı"}
+    return data
 
 from scraper.sofascore import (
     get_last5,
@@ -105,3 +130,4 @@ def fixtures_random():
     if not data:
         return {"error": "Bugün için fikstür bulunamadı"}
     return data
+
