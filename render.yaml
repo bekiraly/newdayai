@@ -1,12 +1,7 @@
 services:
   - type: web
-    name: newday-ai-engine
+    name: newdayai
+    root: newdayai
     env: python
-    plan: free
-    buildCommand: |
-      pip install -r requirements.txt
-      python -m playwright install --with-deps chromium
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
-    envVars:
-      - key: PYTHONUNBUFFERED
-        value: "1"
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
