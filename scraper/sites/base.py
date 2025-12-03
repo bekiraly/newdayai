@@ -1,5 +1,5 @@
 from typing import Protocol, List, Optional
-from app.models import TeamFormData, MatchResult, RawAggregateData
+from api.models import TeamFormData, MatchResult, RawAggregateData
 
 
 class SiteScraper(Protocol):
