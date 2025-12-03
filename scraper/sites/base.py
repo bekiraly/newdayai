@@ -7,6 +7,10 @@ class SiteScraper(Protocol):
     Her site için ortak interface.
     """
 
+class BaseSiteScraper:
+    def __init__(self, browser):
+        self.browser = browser
+
     def get_team_form(self, team_name: str) -> Optional[TeamFormData]:
         ...
 
