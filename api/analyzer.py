@@ -1,7 +1,7 @@
 from api.models import RawAggregateData, TeamFormData
 from api.scraping.sites import sofascore
-# nesine/bilyoner/livescore modüllerini de burada import edebilirsin
-
+from scraper.sites.sofascore import SofaScoreScraper
+from scraper.sites.nesine import NesineScraper
 
 def aggregate_team_form(team_name: str) -> TeamFormData:
     """
