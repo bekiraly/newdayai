@@ -6,28 +6,24 @@ from scraper.browser import Browser
 
 async def analyze_match(home: str, away: str) -> RawAggregateData:
     """
-    Tüm scraping işlemlerini yöneten ana analiz fonksiyonu.
+    Tüm sitelerden veri toplayıp tekleştiriyoruz.
     """
 
-    browser = Browser()
-    await browser.start()
+    async with Browser() as browser:
+        ss = SofaScoreScraper(browser)
+        ns = NesineScraper(browser)
 
-    sofascore = SofaScoreScraper(browser)
-    nesine = NesineScraper(browser)
+        # Sofascore form
+        form_home = await ss.get_team_form(home)
+        form_away = await ss.get_team_form(away)
 
-    # Sofascore’dan form bilgisi
-    form_home = await sofascore.get_last_5_matches(home)
-    form_away = await sofascore.get_last_5_matches(away)
+        # Nesine oranları
+        odds = await ns.get_odds(home, away)
 
-    # Nesine’den oran bilgisi
-    odds = await nesine.get_odds(home, away)
-
-    await browser.stop()
-
-    return RawAggregateData(
-        home=home,
-        away=away,
-        form_home=TeamFormData(**form_home),
-        form_away=TeamFormData(**form_away),
-        odds=odds
-    )
+        return RawAggregateData(
+            home=home,
+            away=away,
+            form_home=form_home,
+            form_away=form_away,
+            odds=odds,
+        )
