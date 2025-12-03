@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>NewDay AI Analiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ARKA PLAN -->
+  <div class="page-bg">
+    <div class="bg-half bg-left"></div>
+    <div class="bg-half bg-right"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="hero">
+    <img src="img/banner.jpg" alt="NewDay AI Banner" class="hero-banner" />
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="logo-wrap">
+        <img src="img/logo.png" alt="NewDay AI Analiz Logo" class="logo" />
+        <div class="logo-text">
+          <span class="brand-top">AI ANALYTICS</span>
+          <span class="brand-main">NEWDAY</span>
+          <span class="brand-sub">AI ANALİZ</span>
+        </div>
+      </div>
+
+      <p class="hero-subtitle">
+        Süper Lig, Avrupa ligleri ve daha fazlası için taktiksel, istatistiksel ve form analizine dayalı yapay zeka tahmini.
+      </p>
+    </div>
+  </header>
+
+  <!-- ANA GÖVDE -->
+  <main class="main">
+    <section class="match-card">
+
+      <h1 class="section-title">Maç Analizi</h1>
+
+      <!-- TAKIM GİRİŞİ -->
+      <div class="teams-input">
+        <div class="team-field">
+          <label for="homeTeam">Ev Sahibi</label>
+          <input id="homeTeam" type="text" placeholder="Örn: Konyaspor" />
+        </div>
+
+        <div class="vs-label">VS</div>
+
+        <div class="team-field">
+          <label for="awayTeam">Deplasman</label>
+          <input id="awayTeam" type="text" placeholder="Örn: Trabzonspor" />
+        </div>
+      </div>
+
+      <!-- BUTON -->
+      <button id="analyzeBtn" class="btn-analyze">
+        KARŞILAŞTIR
+      </button>
+
+      <audio id="vsSound" src="sounds/vs.mp3" preload="auto"></audio>
+
+      <!-- VS ANİMASYONU -->
+      <div id="vsAnimation" class="vs-animation">
+        <div class="vs-side vs-left">
+          <img id="homeLogo" class="team-logo hidden" alt="Home logo" />
+          <span id="vsHomeName">HOME</span>
+        </div>
+
+        <div class="vs-center">
+          <div class="lightning"></div>
+          <span class="vs-text">VS</span>
+        </div>
+
+        <div class="vs-side vs-right">
+          <span id="vsAwayName">AWAY</span>
+          <img id="awayLogo" class="team-logo hidden" alt="Away logo" />
+        </div>
+      </div>
+
+      <!-- YÜKLEME ADIMLARI -->
+      <div id="loadingSteps" class="loading-steps hidden">
+        <h2>Analiz Yapılıyor...</h2>
+
+        <ul>
+          <li data-step="1">
+            <span class="step-label">Takımların Son 5 Maçı</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="2">
+            <span class="step-label">Taktik Profil & Oyun Tarzı</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="3">
+            <span class="step-label">Oyuncu Performansı & Matchup</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="4">
+            <span class="step-label">Diziliş & Eşleşme Analizi</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="5">
+            <span class="step-label">Gol Beklentisi (xG/xGA)</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="6">
+            <span class="step-label">H2H Geçmiş Karşılaşmalar</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="7">
+            <span class="step-label">Kadro Derinliği & Eksikler</span>
+            <span class="step-status"></span>
+          </li>
+          <li data-step="8">
+            <span class="step-label">Form Eğrisi & Momentum</span>
+            <span class="step-status"></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SONUÇ KARTI -->
+      <div id="resultCard" class="result-card hidden">
+        <div id="formResults" class="form-results">
+
+          <p id="homeFormText"></p>
+          <p id="awayFormText"></p>
+
+          <h2 id="resultTitle">Sonuç</h2>
+
+          <div class="probabilities">
+            <div class="prob-box">
+              <span class="prob-label" id="homeProbLabel">Ev Sahibi</span>
+              <span class="prob-value" id="homeProb">--%</span>
+            </div>
+
+            <div class="prob-box">
+              <span class="prob-label">Beraberlik</span>
+              <span class="prob-value" id="drawProb">--%</span>
+            </div>
+
+            <div class="prob-box">
+              <span class="prob-label" id="awayProbLabel">Deplasman</span>
+              <span class="prob-value" id="awayProb">--%</span>
+            </div>
+          </div>
+
+          <p class="result-note">
+            *Bu ilk prototip versiyonu; istatistiksel model ve Sofascore verisi derinleştirildikçe tahmin motoru gelişecek.
+          </p>
+
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ALT YAZI / TICKER -->
+  <div class="ticker">
+    <div class="ticker-content" id="tickerContent">
+      Yükleniyor...
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © <span id="year"></span> NewDay AI Analiz — Beta
+  </footer>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
