@@ -8,6 +8,7 @@ from scraper.sites.nesine import NesineScraper
 from scraper.browser import Browser
 
 
+
 app = FastAPI(
     title="NewDay AI Football Engine",
     version="1.0.0"
@@ -40,6 +41,7 @@ def analyze(req: AnalyzeRequest):
         prediction=pred,
         raw=raw,
     )
+
 
 
 
