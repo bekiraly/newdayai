@@ -3,7 +3,7 @@
 // ==========================
 // CONFIG
 // ==========================
-const API_URL = "https://SENIN_RENDER_DOMAININ.onrender.com"; // Burayı kendi backend URL'inle değiştir
+const API_URL = "https://newdayai.onrender.com"; // Burayı kendi backend URL'inle değiştir
 
 // ==========================
 // ELEMENTLER
