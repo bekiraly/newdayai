@@ -1,4 +1,4 @@
-from app.models import RawAggregateData
+from api.models import RawAggregateData
 from typing import Dict
 import math
 
