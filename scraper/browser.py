@@ -5,7 +5,10 @@ class Browser:
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
             headless=True,
-            args=["--no-sandbox", "--disable-dev-shm-usage"]
+            args=[
+                "--no-sandbox",
+                "--disable-dev-shm-usage"
+            ]
         )
         self.page = await self.browser.new_page()
         return self.page
