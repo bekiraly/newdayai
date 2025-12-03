@@ -3,7 +3,6 @@ builder = "NIXPACKS"
 
 [build.nixpacks]
 plan = "python"
-# Python sürümü
 config = { PYTHON_VERSION = "3.12" }
 
 [phases.setup]
