@@ -1,9 +1,9 @@
 fastapi
 uvicorn
-pydantic
+playwright
 requests
-playwright
-numpy
-scikit-learn
-playwright
+pydantic
 beautifulsoup4
+scikit-learn
+numpy
+scipy
