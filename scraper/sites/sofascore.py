@@ -1,6 +1,6 @@
 import requests
 from typing import Optional, List
-from app.models import TeamFormData, MatchResult
+from api.models import TeamFormData, MatchResult
 from .base import safe_str
 
 BASE = "https://api.sofascore.com/api/v1"
