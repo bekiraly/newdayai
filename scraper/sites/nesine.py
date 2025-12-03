@@ -1,6 +1,6 @@
 from typing import Optional
-from app.models import TeamFormData
-from app.scraping.browser import fetch_html
+from api.models import TeamFormData
+from api.scraping.browser import fetch_html
 from .base import safe_str
 from bs4 import BeautifulSoup  # bunu requirements'a eklemedik, ekleyelim
 
