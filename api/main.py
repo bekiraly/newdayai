@@ -8,42 +8,42 @@ from scraper.sites.sofascore import SofaScoreScraper
 from scraper.sites.nesine import NesineScraper
 from scraper.browser import Browser
 
+app = FastAPI()
 
-
-app = FastAPI(
-    title="NewDay AI Football Engine",
-    version="1.0.0"
-)
-
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # İleride domain bazlı kısıtlarsın
-    allow_credentials=True,
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
 @app.get("/")
-def root():
+async def root():
     return {"status": "ok", "service": "NewDay AI Engine"}
 
 
-@app.post("/analyze", response_model=AnalyzeResponse)
-def analyze(req: AnalyzeRequest):
-    raw = build_raw_aggregate(req.home, req.away)
+@app.post("/analyze")
+async def analyze(req: AnalyzeRequest) -> AnalyzeResponse:
+    raw = await analyze_match(req.home, req.away)
     pred = predict_from_raw(raw)
-
-    return AnalyzeResponse(
-        home=req.home,
-        away=req.away,
-        form_home=raw.home.form_string,
-        form_away=raw.away.form_string,
-        prediction=pred,
-        raw=raw,
-    )
+    return {
+        "home": req.home,
+        "away": req.away,
+        "form_home": raw.form_home.form_string,
+        "form_away": raw.form_away.form_string,
+        "prediction": pred.dict()
+    }
 
 
+@app.get("/form/{team}")
+async def form(team: str):
+    raw = await analyze_match(team, team)
+    return {
+        "team": team,
+        "form": raw.form_home.form_string,
+        "matches": [m.dict() for m in raw.form_home.matches]
+    }
 
 
 
