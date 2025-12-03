@@ -5,7 +5,6 @@ class Browser:
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
             headless=True,
-            executable_path="/tmp/pw/chromium/headless_shell",
             args=["--no-sandbox", "--disable-dev-shm-usage"]
         )
         self.page = await self.browser.new_page()
