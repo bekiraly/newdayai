@@ -19,3 +19,16 @@ def predict_match(league, season, home, away):
         "last_away_matches": last_away,
         "head_to_head": h2h
     }
+
+def predict_match(league, season, home, away):
+    # 1) Veriyi çek
+    # 2) Normalize et
+    # 3) Feature hesapla
+    # 4) Tahmin üret
+    # 5) JSON döndür
+
+    return {
+        "status": "ok",
+        "match": f"{home} vs {away}",
+        "prediction": "engine v1 skeleton ready"
+    }
