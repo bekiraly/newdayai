@@ -1,18 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.models import AnalyzeRequest, AnalyzeResponse
-from api.analyzer import analyze_match
-from api.prediction import predict_from_raw
+from src.api.router import router
 
-from scraper.sites.sofascore import SofaScoreScraper
-from scraper.sites.nesine import NesineScraper
-from scraper.browser import Browser
-from fastapi import FastAPI
-from .router import router
-
-app = FastAPI(title="NewDayAI - Match Prediction Engine")
-
-app.include_router(router)
+app = FastAPI(
+    title="NewDayAI - Match Prediction Engine",
+    description="API-Football verileriyle maç analizi ve tahmin motoru",
+    version="1.0.0"
+)
 
 # CORS
 app.add_middleware(
@@ -22,34 +16,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Router bağlama
+app.include_router(router)
+
 @app.get("/")
 async def root():
-    return {"status": "ok", "service": "NewDay AI Engine"}
-
-
-@app.post("/analyze")
-async def analyze(req: AnalyzeRequest) -> AnalyzeResponse:
-    raw = await analyze_match(req.home, req.away)
-    pred = predict_from_raw(raw)
-    return {
-        "home": req.home,
-        "away": req.away,
-        "form_home": raw.form_home.form_string,
-        "form_away": raw.form_away.form_string,
-        "prediction": pred.dict()
-    }
-
-
-@app.get("/form/{team}")
-async def form(team: str):
-    raw = await analyze_match(team, team)
-    return {
-        "team": team,
-        "form": raw.form_home.form_string,
-        "matches": [m.dict() for m in raw.form_home.matches]
-    }
-
-
-
-
-
+    return {"status": "ok", "service": "NewDayAI Engine"}
