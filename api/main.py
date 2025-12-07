@@ -7,8 +7,12 @@ from api.prediction import predict_from_raw
 from scraper.sites.sofascore import SofaScoreScraper
 from scraper.sites.nesine import NesineScraper
 from scraper.browser import Browser
+from fastapi import FastAPI
+from .router import router
 
-app = FastAPI()
+app = FastAPI(title="NewDayAI - Match Prediction Engine")
+
+app.include_router(router)
 
 # CORS
 app.add_middleware(
@@ -44,6 +48,7 @@ async def form(team: str):
         "form": raw.form_home.form_string,
         "matches": [m.dict() for m in raw.form_home.matches]
     }
+
 
 
 
