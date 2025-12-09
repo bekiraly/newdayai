@@ -133,8 +133,8 @@ def predict_match(league: str, season: int, home: str, away: str) -> Dict[str, A
     away_id = api.get_team_id(away, country=None)
 
     # 2) Son maçlar + H2H
-    raw_last_home = api.get_last_fixtures(home_id, last=5)
-    raw_last_away = api.get_last_fixtures(away_id, last=5)
+    raw_last_home = api.get_last_fixtures(home_id, last=5, season=season)
+    raw_last_away = api.get_last_fixtures(away_id, last=5, season=season)
     raw_h2h = api.get_head_to_head(home_id, away_id, last=5)
 
     # 3) Normalize
