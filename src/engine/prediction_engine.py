@@ -9,7 +9,6 @@ from ..normalizers.match_normalizer import (
 )
 from ..utils.math_utils import clamp
 
-
 api = APIFootball()
 
 
