@@ -13,22 +13,41 @@ HEADERS = {
 
 class APIFootball:
 
-    def get_team_id(self, name):
+    def get_team_id(self, name, country=None):
+        """Takım ID bulma"""
         url = f"{BASE_URL}/teams?search={name}"
         res = requests.get(url, headers=HEADERS)
         data = res.json()
 
-        if data["results"] == 0:
+        if data.get("results", 0) == 0:
             return None
 
-        return data["response"][0]["team"]["id"]
+        # En doğru eşleşmeyi seç
+        for item in data["response"]:
+            if country and item["team"]["country"] != country:
+                continue
+            return item["team"]["id"]
 
-    def get_last_matches(self, team_id, last=5):
+        return data["response"][0]["team"]["id"]  # fallback
+
+    def get_last_fixtures(self, team_id, last=5):
+        """Son maçlar (tahmin motorunun beklediği format)"""
         url = f"{BASE_URL}/fixtures?team={team_id}&last={last}"
         res = requests.get(url, headers=HEADERS)
-        return res.json()
+        data = res.json()
 
-    def get_head_to_head(self, team1, team2):
-        url = f"{BASE_URL}/fixtures/headtohead?h2h={team1}-{team2}"
+        if data.get("results", 0) == 0:
+            return []
+
+        return data["response"]
+
+    def get_head_to_head(self, team1, team2, last=5):
+        """İki takım arası H2H"""
+        url = f"{BASE_URL}/fixtures/headtohead?h2h={team1}-{team2}&last={last}"
         res = requests.get(url, headers=HEADERS)
-        return res.json()
+        data = res.json()
+
+        if data.get("results", 0) == 0:
+            return []
+
+        return data["response"]
