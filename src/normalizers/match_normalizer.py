@@ -4,36 +4,41 @@ from ..utils.math_utils import safe_div
 
 
 def normalize_team_fixtures(fixtures: List[Dict[str, Any]], team_id: int) -> List[Dict[str, Any]]:
-    """
-    API-Football fixtures -> sade format:
-    { goals_for, goals_against, is_home, result }
-    """
     normalized: List[Dict[str, Any]] = []
 
     for fix in fixtures:
-        teams = fix.get("teams", {})
-        goals = fix.get("goals", {})
+        # FIXTURES bazen null döner → koruma
+        if not isinstance(fix, dict):
+            continue
 
-        home = teams.get("home", {})
-        away = teams.get("away", {})
+        teams = fix.get("teams") or {}
+        goals = fix.get("goals") or {"home": 0, "away": 0}
+
+        home = teams.get("home") or {}
+        away = teams.get("away") or {}
 
         home_id = home.get("id")
         away_id = away.get("id")
 
+        # Gol null olabilir → güvenli şekilde temizle
+        gf_home = goals.get("home") if isinstance(goals.get("home"), int) else 0
+        gf_away = goals.get("away") if isinstance(goals.get("away"), int) else 0
+
+        # Takım ev sahibi mi?
         if home_id == team_id:
             is_home = True
-            gf = goals.get("home", 0) or 0
-            ga = goals.get("away", 0) or 0
+            gf = gf_home
+            ga = gf_away
             winner_flag = home.get("winner")
         elif away_id == team_id:
             is_home = False
-            gf = goals.get("away", 0) or 0
-            ga = goals.get("home", 0) or 0
+            gf = gf_away
+            ga = gf_home
             winner_flag = away.get("winner")
         else:
-            # bu maçta takım yok → atla (normalde olmaz)
             continue
 
+        # Sonuç belirleme
         if winner_flag is True:
             result = "W"
         elif winner_flag is False:
@@ -41,14 +46,12 @@ def normalize_team_fixtures(fixtures: List[Dict[str, Any]], team_id: int) -> Lis
         else:
             result = "D"
 
-        normalized.append(
-            {
-                "goals_for": int(gf),
-                "goals_against": int(ga),
-                "is_home": is_home,
-                "result": result,
-            }
-        )
+        normalized.append({
+            "goals_for": int(gf),
+            "goals_against": int(ga),
+            "is_home": is_home,
+            "result": result,
+        })
 
     return normalized
 
