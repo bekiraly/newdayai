@@ -35,12 +35,12 @@ class APIFootball:
         return data["response"][0]["team"]["id"]  # fallback
     
     def get_last_fixtures(self, team_id, last=5, season=2024):
-         url = f"{BASE_URL}/fixtures?team={team_id}&season={season}&last={last}"
-         res = requests.get(url, headers=HEADERS)
-         data = res.json()
+        url = f"{BASE_URL}/fixtures?team={team_id}&season={season}&last={last}"
+        res = requests.get(url, headers=HEADERS)
+        data = res.json()
 
         if data.get("results", 0) == 0:
-             return []
+            return []
 
         return data["response"]
 
